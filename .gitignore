@@ -1,0 +1,11 @@
+/AutoFillPlugin/.vs/AutoFillPlugin/v15/*.suo
+/AutoFillPlugin/*.user
+*.suo
+/AutoFillPlugin/bin/Debug
+/AutoFillPlugin/bin/Release
+/AutoFillPlugin/obj/Debug
+/AutoFillPlugin/obj/Release
+/Kp2aAccServiceLibBindings/bin/Debug
+/Kp2aAccServiceLibBindings/bin/Release
+/Kp2aAccServiceLibBindings/obj/Debug
+/Kp2aAccServiceLibBindings/obj/Release
