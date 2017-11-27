@@ -107,6 +107,15 @@ namespace keepass2android.AutoFillPlugin
 			// aapt resource value: 0x7f060000
 			public const int app_name = 2131099648;
 			
+			// aapt resource value: 0x7f06000a
+			public const int kp2aplugin_author = 2131099658;
+			
+			// aapt resource value: 0x7f060009
+			public const int kp2aplugin_shortdesc = 2131099657;
+			
+			// aapt resource value: 0x7f060008
+			public const int kp2aplugin_title = 2131099656;
+			
 			// aapt resource value: 0x7f060006
 			public const int library_name = 2131099654;
 			

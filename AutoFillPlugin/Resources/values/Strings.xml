@@ -6,4 +6,8 @@
   <string name="NotificationTitle">Keepass2Android AutoFill</string>
     <string name="NotificationContentText">AutoFill form for %1$s</string>
   <string name="NotificationTickerText">AutoFill available for %1$s</string>
+
+  <string name="kp2aplugin_title">AutoFill-Plugin (Accessibility Service)</string>
+  <string name="kp2aplugin_shortdesc">Provides AutoFill as an Android Accessibility service.</string>
+  <string name="kp2aplugin_author">Philipp Crocoll (CrocoApps)</string>
 </resources>
