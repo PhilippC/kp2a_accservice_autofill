@@ -65,13 +65,10 @@ namespace keepass2android.AutoFillPlugin
 		{
 			
 			// aapt resource value: 0x7f020000
-			public const int ic_launcher = 2130837504;
+			public const int ic_notify_autofill = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int ic_notify_autofill = 2130837505;
-			
-			// aapt resource value: 0x7f020002
-			public const int Icon = 2130837506;
+			public const int Icon = 2130837505;
 			
 			static Drawable()
 			{

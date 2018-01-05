@@ -1,0 +1,6 @@
+int drawable ic_notify_autofill 0x7f020000
+int string ApplicationName 0x7f030000
+int string AutoFillServiceDescription 0x7f030001
+int string LookupTitle 0x7f030002
+int string NotificationContentText 0x7f030003
+int string NotificationTitle 0x7f030004

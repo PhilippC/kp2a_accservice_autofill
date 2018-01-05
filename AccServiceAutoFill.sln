@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoFillPlugin", "AutoFillPlugin.csproj", "{6FF440E6-E8FF-4E43-8221-9E3972F14812}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoFillPlugin", "AutoFillPlugin\AutoFillPlugin.csproj", "{6FF440E6-E8FF-4E43-8221-9E3972F14812}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeePassLib2Android", "..\..\keepass2android\src\KeePassLib2Android\KeePassLib2Android.csproj", "{545B4A6B-8BBA-4FBE-92FC-4AC060122A54}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kp2aAccServiceLibBindings", "Kp2aAccServiceLibBindings\Kp2aAccServiceLibBindings.csproj", "{303C49EE-BEF3-4A1A-AF35-B813812A7B5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kp2aAccServiceLibBindings", "..\Kp2aAccServiceLibBindings\Kp2aAccServiceLibBindings.csproj", "{303C49EE-BEF3-4A1A-AF35-B813812A7B5A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginSdkBinding", "..\keepass2android\src\PluginSdkBinding\PluginSdkBinding.csproj", "{3DA3911E-36DE-465E-8F15-F1991B6437E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginSdkBinding", "..\..\keepass2android\src\PluginSdkBinding\PluginSdkBinding.csproj", "{3DA3911E-36DE-465E-8F15-F1991B6437E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeePassLib2Android", "..\keepass2android\src\KeePassLib2Android\KeePassLib2Android.csproj", "{545B4A6B-8BBA-4FBE-92FC-4AC060122A54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,12 +27,6 @@ Global
 		{6FF440E6-E8FF-4E43-8221-9E3972F14812}.ReleaseNoNet|Any CPU.ActiveCfg = Release|Any CPU
 		{6FF440E6-E8FF-4E43-8221-9E3972F14812}.ReleaseNoNet|Any CPU.Build.0 = Release|Any CPU
 		{6FF440E6-E8FF-4E43-8221-9E3972F14812}.ReleaseNoNet|Any CPU.Deploy.0 = Release|Any CPU
-		{545B4A6B-8BBA-4FBE-92FC-4AC060122A54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{545B4A6B-8BBA-4FBE-92FC-4AC060122A54}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{545B4A6B-8BBA-4FBE-92FC-4AC060122A54}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{545B4A6B-8BBA-4FBE-92FC-4AC060122A54}.Release|Any CPU.Build.0 = Release|Any CPU
-		{545B4A6B-8BBA-4FBE-92FC-4AC060122A54}.ReleaseNoNet|Any CPU.ActiveCfg = ReleaseNoNet|Any CPU
-		{545B4A6B-8BBA-4FBE-92FC-4AC060122A54}.ReleaseNoNet|Any CPU.Build.0 = ReleaseNoNet|Any CPU
 		{303C49EE-BEF3-4A1A-AF35-B813812A7B5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{303C49EE-BEF3-4A1A-AF35-B813812A7B5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{303C49EE-BEF3-4A1A-AF35-B813812A7B5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,8 +39,17 @@ Global
 		{3DA3911E-36DE-465E-8F15-F1991B6437E5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3DA3911E-36DE-465E-8F15-F1991B6437E5}.ReleaseNoNet|Any CPU.ActiveCfg = ReleaseNoNet|Any CPU
 		{3DA3911E-36DE-465E-8F15-F1991B6437E5}.ReleaseNoNet|Any CPU.Build.0 = ReleaseNoNet|Any CPU
+		{545B4A6B-8BBA-4FBE-92FC-4AC060122A54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{545B4A6B-8BBA-4FBE-92FC-4AC060122A54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{545B4A6B-8BBA-4FBE-92FC-4AC060122A54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{545B4A6B-8BBA-4FBE-92FC-4AC060122A54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{545B4A6B-8BBA-4FBE-92FC-4AC060122A54}.ReleaseNoNet|Any CPU.ActiveCfg = ReleaseNoNet|Any CPU
+		{545B4A6B-8BBA-4FBE-92FC-4AC060122A54}.ReleaseNoNet|Any CPU.Build.0 = ReleaseNoNet|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9106359B-E742-4D93-A2F0-CC87CC6CF33B}
 	EndGlobalSection
 EndGlobal
