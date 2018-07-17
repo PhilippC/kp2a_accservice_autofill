@@ -11,6 +11,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -33,7 +34,8 @@ public class AutoFillService extends AccessibilityService {
     private static boolean _hasUsedData = true;
     private static String _lastSearchUrl;
     private static final String _logTag = "KP2AAF";
-    private static boolean _isRunning;
+    private static boolean _isRunning;  
+    private static long _lastSearchTime = 0;
 
     private final int autoFillNotificationId = 798810;
     private final String androidAppPrefix = "androidapp://";
@@ -115,7 +117,6 @@ public class AutoFillService extends AccessibilityService {
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        android.util.Log.d(_logTag, "OnAccEvent");
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
         {
@@ -131,109 +132,122 @@ public class AutoFillService extends AccessibilityService {
     private void handleAccessibilityEvent(AccessibilityEvent event) {
         try
         {
-            if (event.getEventType() ==  AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED
-                    || event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED)
+            long timeNow = SystemClock.elapsedRealtime();
+            if (timeNow - _lastSearchTime > 1000)
             {
-                CharSequence packageName = event.getPackageName();
-                android.util.Log.d(_logTag, "event: " + event.getEventType() + ", package = " + packageName);
-                if ( isLauncherPackage(event.getPackageName()) )
+                android.util.Log.d(_logTag, "OnAccEvent");
+                _lastSearchTime = timeNow;
+                
+                if (event.getEventType() ==  AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED
+                        || event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED)
                 {
-                    android.util.Log.d(_logTag, "return.");
-                    return; //avoid that the notification is cancelled when pulling down notif drawer
-                }
-                else
-                {
-                    android.util.Log.d(_logTag, "event package is no launcher");
-                }
-
-                if ((packageName != null)
-                    && (packageName.toString().startsWith("keepass2android.")))
-                {
-                    android.util.Log.d(_logTag, "don't autofill kp2a.");
-                    return;
-                }
-
-                AccessibilityNodeInfo root = getRootInActiveWindow();
-
-                if ( isLauncherPackage(root.getPackageName()) )
-                {
-                    android.util.Log.d(_logTag, "return, root is from launcher.");
-                    return; //avoid that the notification is cancelled when pulling down notif drawer
-                }
-                else
-                {
-                    android.util.Log.d(_logTag, "root package is no launcher");
-                }
-
-                int eventWindowId = event.getWindowId();
-                if ((ExistsNodeOrChildren(root, new WindowIdCondition(eventWindowId)) && !ExistsNodeOrChildren(root, new SystemUiCondition())))
-                {
-                    boolean cancelNotification = true;
-
-                    String url = androidAppPrefix + root.getPackageName();
-
-                    if ( "com.android.chrome".equals(root.getPackageName()) )
+                    CharSequence packageName = event.getPackageName();
+                    android.util.Log.d(_logTag, "event: " + event.getEventType() + ", package = " + packageName);
+                    if ( isLauncherPackage(event.getPackageName()) )
                     {
-                        List<AccessibilityNodeInfo> urlFields = root.findAccessibilityNodeInfosByViewId("com.android.chrome:id/url_bar");
-                        url = urlFromAddressFields(urlFields, url);
-
+                        android.util.Log.d(_logTag, "return.");
+                        return; //avoid that the notification is cancelled when pulling down notif drawer
                     }
-                    else if (packageName == "com.sec.android.app.sbrowser")
+                    else
                     {
-                        List<AccessibilityNodeInfo> urlFields = root.findAccessibilityNodeInfosByViewId("com.sec.android.app.sbrowser:id/location_bar_edit_text");
-                        url = urlFromAddressFields(urlFields, url);
-                    }
-                    else if ("com.android.browser".equals(root.getPackageName()))
-                    {
-                        List<AccessibilityNodeInfo> urlFields =  root.findAccessibilityNodeInfosByViewId("com.android.browser:id/url");
-                        url = urlFromAddressFields(urlFields, url);
+                        android.util.Log.d(_logTag, "event package is no launcher");
                     }
 
-                    android.util.Log.d(_logTag, "URL=" + url);
-
-                    if (ExistsNodeOrChildren(root, new PasswordFieldCondition()))
+                    if ((packageName != null)
+                        && (packageName.toString().startsWith("keepass2android.")))
                     {
-                        if ((getLastReceivedCredentialsUser() != null) &&
-                                (!_hasUsedData) &&
-                                (Objects.equals(url, _lastSearchUrl)
-                                || isSame(getCredentialsField("URL"), url)))
+                        android.util.Log.d(_logTag, "don't autofill kp2a.");
+                        return;
+                    }
+
+                    AccessibilityNodeInfo root = getRootInActiveWindow();
+
+                    if ( isLauncherPackage(root.getPackageName()) )
+                    {
+                        android.util.Log.d(_logTag, "return, root is from launcher.");
+                        return; //avoid that the notification is cancelled when pulling down notif drawer
+                    }
+                    else
+                    {
+                        android.util.Log.d(_logTag, "root package is no launcher");
+                    }
+
+                    int eventWindowId = event.getWindowId();
+                    if ((ExistsNodeOrChildren(root, new WindowIdCondition(eventWindowId)) && !ExistsNodeOrChildren(root, new SystemUiCondition())))
+                    {
+                        boolean cancelNotification = true;
+
+                        String url = androidAppPrefix + root.getPackageName();
+
+                        if ( "com.android.chrome".equals(root.getPackageName()) )
                         {
-                            android.util.Log.d(_logTag, "Filling credentials for " + url);
+                            List<AccessibilityNodeInfo> urlFields = root.findAccessibilityNodeInfosByViewId("com.android.chrome:id/url_bar");
+                            url = urlFromAddressFields(urlFields, url);
 
-                            List<AccessibilityNodeInfo> emptyPasswordFields = new ArrayList<>();
-                            GetNodeOrChildren(root, new PasswordFieldCondition(), emptyPasswordFields);
+                        }
+                        else if (packageName == "com.sec.android.app.sbrowser")
+                        {
+                            List<AccessibilityNodeInfo> urlFields = root.findAccessibilityNodeInfosByViewId("com.sec.android.app.sbrowser:id/location_bar_edit_text");
+                            url = urlFromAddressFields(urlFields, url);
+                        }
+                        else if ("com.android.browser".equals(root.getPackageName()))
+                        {
+                            List<AccessibilityNodeInfo> urlFields =  root.findAccessibilityNodeInfosByViewId("com.android.browser:id/url");
+                            url = urlFromAddressFields(urlFields, url);
+                        }
+                        else if ( "com.brave.browser".equals(root.getPackageName()) )
+                        {
+                            List<AccessibilityNodeInfo> urlFields = root.findAccessibilityNodeInfosByViewId("com.brave.browser:id/url_bar");
+                            url = urlFromAddressFields(urlFields, url);
 
-                            List<AccessibilityNodeInfo> allEditTexts = new ArrayList<>();
-                            GetNodeOrChildren(root, new EditTextCondition(), allEditTexts);
+                        }
 
-                            AccessibilityNodeInfo usernameEdit = null;
-                            for (int i=0;i<allEditTexts.size();i++)
+                        android.util.Log.d(_logTag, "URL=" + url);
+
+                        if (ExistsNodeOrChildren(root, new PasswordFieldCondition()))
+                        {
+                            if ((getLastReceivedCredentialsUser() != null) &&
+                                    (!_hasUsedData) &&
+                                    (Objects.equals(url, _lastSearchUrl)
+                                    || isSame(getCredentialsField("URL"), url)))
                             {
-                                if (allEditTexts.get(i).isPassword() == false)
+                                android.util.Log.d(_logTag, "Filling credentials for " + url);
+
+                                List<AccessibilityNodeInfo> emptyPasswordFields = new ArrayList<>();
+                                GetNodeOrChildren(root, new PasswordFieldCondition(), emptyPasswordFields);
+
+                                List<AccessibilityNodeInfo> allEditTexts = new ArrayList<>();
+                                GetNodeOrChildren(root, new EditTextCondition(), allEditTexts);
+
+                                AccessibilityNodeInfo usernameEdit = null;
+                                for (int i=0;i<allEditTexts.size();i++)
                                 {
-                                    usernameEdit = allEditTexts.get(i);
-                                    android.util.Log.d(_logTag, "setting usernameEdit = " + usernameEdit.getText() + " ");
+                                    if (allEditTexts.get(i).isPassword() == false)
+                                    {
+                                        usernameEdit = allEditTexts.get(i);
+                                        android.util.Log.d(_logTag, "setting usernameEdit = " + usernameEdit.getText() + " ");
+                                    }
+                                    else break;
                                 }
-                                else break;
+
+                                FillPassword(url, usernameEdit, emptyPasswordFields);
+                            }
+                            else
+                            {
+                                android.util.Log.d (_logTag, "Notif for " + url );
+                                AskFillPassword(url);
+                                cancelNotification = false;
                             }
 
-                            FillPassword(url, usernameEdit, emptyPasswordFields);
                         }
-                        else
+                        if (cancelNotification)
                         {
-                            android.util.Log.d (_logTag, "Notif for " + url );
-                            AskFillPassword(url);
-                            cancelNotification = false;
+                            ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancel(autoFillNotificationId);
+                            android.util.Log.d (_logTag,"Cancel notif");
                         }
+                    }
 
-                    }
-                    if (cancelNotification)
-                    {
-                        ((NotificationManager)getSystemService(NOTIFICATION_SERVICE)).cancel(autoFillNotificationId);
-                        android.util.Log.d (_logTag,"Cancel notif");
-                    }
                 }
-
             }
         }
         catch (Exception e)
@@ -267,13 +281,12 @@ public class AutoFillService extends AccessibilityService {
         android.util.Log.d("KP2AAF", "asking for password for " + url);
 
         Intent startKp2aIntent = new Intent();
-        startKp2aIntent.setComponent(new ComponentName(this, "md58dca69cf5ce118dfdacac1ed5b2bbacf.LookupCredentialsActivity"));
+        startKp2aIntent.setComponent(new ComponentName(this, "md5c87355b205601e056f7c18068fdd87fa.LookupCredentialsActivity"));
         if (startKp2aIntent != null)
         {
             startKp2aIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startKp2aIntent.putExtra("UrlToSearch", url);
         }
-
 
         PendingIntent pending = PendingIntent.getActivity(this, 0, startKp2aIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         String targetName = url;
