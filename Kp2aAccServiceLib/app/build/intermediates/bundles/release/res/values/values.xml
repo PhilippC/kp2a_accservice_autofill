@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/ph/keepass2android/src/java/Kp2aAccServiceLib/app/src/main/res/values/strings_autofill.xml -->
+    <!-- From: file:/C:/github/kp2a_accservice_autofill/Kp2aAccServiceLib/app/src/main/res/values/strings_autofill.xml -->
     <eat-comment/>
     <string name="ApplicationName">KP2A AutoFillPlugin</string>
     <string name="AutoFillServiceDescription">Monitors apps and websites for password fields. Offers to look up credentials from Keepass2Android and auto-fill them into the forms.</string>

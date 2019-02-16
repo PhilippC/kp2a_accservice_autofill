@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="C:\ph\keepass2android\src\java\Kp2aAccServiceLib\app\src\main\assets"/></dataSet><dataSet config="release"><source path="C:\ph\keepass2android\src\java\Kp2aAccServiceLib\app\src\release\assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="C:\github\kp2a_accservice_autofill\Kp2aAccServiceLib\app\src\main\assets"/></dataSet><dataSet config="release"><source path="C:\github\kp2a_accservice_autofill\Kp2aAccServiceLib\app\src\release\assets"/></dataSet></merger>

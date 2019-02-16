@@ -12,7 +12,6 @@
     <RootNamespace>Kp2aAccServiceLibBindings</RootNamespace>
     <AssemblyName>Kp2aAccServiceLibBindings</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
