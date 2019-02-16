@@ -132,7 +132,6 @@ public class AutoFillService extends AccessibilityService {
     private void handleAccessibilityEvent(AccessibilityEvent event) {
         try
         {
-			//android.util.Log.d(_logTag, "OnAccEvent --- " + event.getSource().getViewIdResourceName());
             long timeNow = SystemClock.elapsedRealtime();
             if (timeNow - _lastSearchTime > 1000)
             {
@@ -179,8 +178,6 @@ public class AutoFillService extends AccessibilityService {
                         boolean cancelNotification = true;
 
                         String url = androidAppPrefix + root.getPackageName();
-						
-						//DumpNodeNames(root);
 
                         if ("com.android.chrome".equals(root.getPackageName()))
                         {
@@ -405,18 +402,6 @@ public class AutoFillService extends AccessibilityService {
             }
         }
         return null;
-    }
-
-    private void DumpNodeNames(AccessibilityNodeInfo n) {
-        if (n != null)
-        {
-            android.util.Log.d(_logTag, n.getViewIdResourceName() + " - " + n.toString());
-			
-            for (int i = 0; i < n.getChildCount(); i++)
-            {
-                DumpNodeNames(n.getChild(i));
-            }
-        }
     }
 
     private void GetNodeOrChildren(AccessibilityNodeInfo n, NodeCondition condition, List<AccessibilityNodeInfo> result) {
