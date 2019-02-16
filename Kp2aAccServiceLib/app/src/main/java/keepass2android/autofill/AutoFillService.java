@@ -132,6 +132,7 @@ public class AutoFillService extends AccessibilityService {
     private void handleAccessibilityEvent(AccessibilityEvent event) {
         try
         {
+			//android.util.Log.d(_logTag, "OnAccEvent --- " + event.getSource().getViewIdResourceName());
             long timeNow = SystemClock.elapsedRealtime();
             if (timeNow - _lastSearchTime > 1000)
             {
@@ -178,12 +179,13 @@ public class AutoFillService extends AccessibilityService {
                         boolean cancelNotification = true;
 
                         String url = androidAppPrefix + root.getPackageName();
+						
+						//DumpNodeNames(root);
 
-                        if ( "com.android.chrome".equals(root.getPackageName()) )
+                        if ("com.android.chrome".equals(root.getPackageName()))
                         {
                             List<AccessibilityNodeInfo> urlFields = root.findAccessibilityNodeInfosByViewId("com.android.chrome:id/url_bar");
                             url = urlFromAddressFields(urlFields, url);
-
                         }
                         else if (packageName == "com.sec.android.app.sbrowser")
                         {
@@ -192,15 +194,19 @@ public class AutoFillService extends AccessibilityService {
                         }
                         else if ("com.android.browser".equals(root.getPackageName()))
                         {
-                            List<AccessibilityNodeInfo> urlFields =  root.findAccessibilityNodeInfosByViewId("com.android.browser:id/url");
+                            List<AccessibilityNodeInfo> urlFields = root.findAccessibilityNodeInfosByViewId("com.android.browser:id/url");
                             url = urlFromAddressFields(urlFields, url);
                         }
-                        else if ( "com.brave.browser".equals(root.getPackageName()) )
+                        else if ("com.brave.browser".equals(root.getPackageName()))
                         {
                             List<AccessibilityNodeInfo> urlFields = root.findAccessibilityNodeInfosByViewId("com.brave.browser:id/url_bar");
                             url = urlFromAddressFields(urlFields, url);
-
                         }
+						else if ("org.mozilla.firefox".equals(root.getPackageName()))
+						{
+                            List<AccessibilityNodeInfo> urlFields = root.findAccessibilityNodeInfosByViewId("org.mozilla.firefox:id/url_bar_title");
+                            url = urlFromAddressFields(urlFields, url);							
+						}
 
                         android.util.Log.d(_logTag, "URL=" + url);
 
@@ -399,6 +405,18 @@ public class AutoFillService extends AccessibilityService {
             }
         }
         return null;
+    }
+
+    private void DumpNodeNames(AccessibilityNodeInfo n) {
+        if (n != null)
+        {
+            android.util.Log.d(_logTag, n.getViewIdResourceName() + " - " + n.toString());
+			
+            for (int i = 0; i < n.getChildCount(); i++)
+            {
+                DumpNodeNames(n.getChild(i));
+            }
+        }
     }
 
     private void GetNodeOrChildren(AccessibilityNodeInfo n, NodeCondition condition, List<AccessibilityNodeInfo> result) {
